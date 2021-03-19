@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx newman run './YOUR_APP/collection/Assessment_2.postman_collection.json' -e './YOUR_APP/envVariables/QA_Assessment_2.postman_environment.json' -r htmlextra --reporter-htmlextra-export './YOUR_APP/reports/report.html'"
+    "test": "npx newman run './YOUR_APP/collection/Assessment_2.postman_collection.json' -e './YOUR_APP/envVariables/QA_Assessment_2.postman_environment.json' -r htmlextra --reporter-htmlextra-export './YOUR_APP/reports/report.html'",
+    "test_tasks": "npx newman run './YOUR_APP/collection/Assessment_2.postman_collection.json' --folder 'Create Tasks' -d './YOUR_APP/files/tasksNamesDDT.csv' -e './YOUR_APP/envVariables/QA_Assessment_2.postman_environment.json' -r htmlextra --reporter-htmlextra-export './YOUR_APP/reports/report_tasks.html'"
   },
   "author": "Andres Alejandre",
   "license": "ISC",

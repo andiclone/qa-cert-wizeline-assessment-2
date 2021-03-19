@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "7c740a33-5e2a-46fe-8618-cf921ba10841",
-		"name": "Assessment 2",
+		"name": "Assessment_2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -152,6 +152,72 @@
 									],
 									"path": [
 										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"taskId\", jsonData.id);",
+											"pm.environment.set(\"content\", jsonData.content);",
+											"var id = pm.environment.get(\"taskId\");",
+											"var jsonData = pm.response.json();",
+											"",
+											"if (jsonData.id) {",
+											"    pm.test(\"Task ID is correct\", function () {",
+											"        pm.expect(jsonData.id).to.eql(id);",
+											"    });",
+											"} else {",
+											"    pm.test(\"Task ID is empty\", function () {",
+											"        pm.expect(jsonData.id).to.eql('' || null);",
+											"    });",
+											"}",
+											"",
+											"if (pm.response.headers) {",
+											"    pm.test(\"Content-Type is present\", function () {",
+											"        pm.response.to.have.header(\"Content-Type\");",
+											"    });",
+											"} else {",
+											"    pm.test(\"Content-Type is not present\", function () {",
+											"        pm.response.to.not.have.header(\"Content-Type\");",
+											"    });",
+											"}",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Requested-Id",
+										"value": "${uuidgen}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"Test2\",\n    \"priority\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
 									]
 								}
 							},
