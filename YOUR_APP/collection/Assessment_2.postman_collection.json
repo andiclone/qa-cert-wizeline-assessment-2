@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "7c740a33-5e2a-46fe-8618-cf921ba10841",
+		"name": "Assessment 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PROJECT ASSIGNMENT 2",
+			"item": [
+				{
+					"name": "Get Active Tasks",
+					"item": [
+						{
+							"name": "Get Active Tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.headers) {",
+											"    pm.test(\"Content-Type is present\", function () {",
+											"        pm.response.to.have.header(\"Content-Type\");",
+											"    });",
+											"} else {",
+											"    pm.test(\"Content-Type is not present\", function () {",
+											"        pm.response.to.not.have.header(\"Content-Type\");",
+											"    });",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create Task",
+					"item": [
+						{
+							"name": "Create New Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"taskId\", jsonData.id);",
+											"pm.environment.set(\"content\", jsonData.content);",
+											"var id = pm.environment.get(\"taskId\");",
+											"var jsonData = pm.response.json();",
+											"",
+											"if (jsonData.id) {",
+											"    pm.test(\"Task ID is correct\", function () {",
+											"        pm.expect(jsonData.id).to.eql(id);",
+											"    });",
+											"} else {",
+											"    pm.test(\"Task ID is empty\", function () {",
+											"        pm.expect(jsonData.id).to.eql('' || null);",
+											"    });",
+											"}",
+											"",
+											"if (pm.response.headers) {",
+											"    pm.test(\"Content-Type is present\", function () {",
+											"        pm.response.to.have.header(\"Content-Type\");",
+											"    });",
+											"} else {",
+											"    pm.test(\"Content-Type is not present\", function () {",
+											"        pm.response.to.not.have.header(\"Content-Type\");",
+											"    });",
+											"}",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Requested-Id",
+										"value": "${uuidgen}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"Test2\",\n    \"priority\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get An Active Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var content = pm.environment.get(\"content\");",
+											"var jsonData = pm.response.json();",
+											"",
+											"if (jsonData.content) {",
+											"    pm.test(\"Content is correct\", function () {",
+											"        pm.expect(jsonData.content).to.eql(content);",
+											"    });",
+											"} else {",
+											"    pm.test(\"Content is wrong\", function () {",
+											"        pm.expect(jsonData.content).to.not.eql(content);",
+											"    });",
+											"}",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/{{taskId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Task",
+					"item": [
+						{
+							"name": "Update Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Requested-Id",
+										"value": "${uuidgen}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"TestUpdate\",\n    \"priority\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/{{taskId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Change Task Status",
+					"item": [
+						{
+							"name": "Change Status to Complete",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/{{taskId}}/close",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"{{taskId}}",
+										"close"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reopen Task",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/{{taskId}}/reopen",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"{{taskId}}",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete Task",
+					"item": [
+						{
+							"name": "Delete Task",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/{{taskId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"if(pm.response.code > 400 && pm.response.code < 599) {",
+							"    pm.test(\"Status is a bad request\", function() {",
+							"        pm.response.to.be.error;",
+							"    });",
+							"} else {",
+							"    pm.test(\"Status code is 2xx\", function() {",
+							"    pm.response.to.be.success;",
+							"    });",
+							"}",
+							"",
+							"if (pm.response.responseTime > 500){",
+							"    pm.test(\"Response time is more than 500ms\", function () {",
+							"        pm.expect(pm.response.responseTime).to.be.above(500);",
+							"    });",
+							"} else {",
+							"    pm.test(\"Response time is less than 500ms\", function () {",
+							"        pm.expect(pm.response.responseTime).to.be.below(500);",
+							"    });",
+							"}"
+						]
+					}
+				}
+			]
+		}
+	]
+}
